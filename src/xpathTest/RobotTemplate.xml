@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot>
+	<IntakeLift>
+			<motor>
+				<type>CANTalon</type>
+				<id>0</id>
+				<invert>TRUE</invert>
+				<brake>TRUE</brake>
+				<maxOut>1.0</maxOut>
+			</motor>
+			
+			<limit>
+				<id>2</id>
+				<normallyOpen>TRUE</normallyOpen>
+				<interruptEdge>onHit</interruptEdge>
+				<debounceTime>0.075</debounceTime>
+			</limit>
+			
+			<encoder>
+				<Achannel>0</Achannel>
+				<Bchannel>1</Bchannel>
+				<IDXchannel>-1</IDXchannel>
+				<invert>TRUE</invert>
+				<distPerCount>0.0123</distPerCount>
+			</encoder>
+			
+			<PID>
+				<kp>0.3</kp>
+				<ki>0.01</ki>
+				<kd>0.0001</kd>
+				<kf>0.2</kf>
+				<period>0.02</period>
+				<tolerance>3</tolerance>
+			</PID>
+			
+			<setpoints>
+				<ballGrabAngle>0</ballGrabAngle>
+				<limitPos>5</limitPos>
+				<maxDown>-4</maxDown>
+				<maxUp>110</maxUp>
+			</setpoints>
+	</IntakeLift>
+	
+	
+	
+	
+	<ChooChoo>
+		<motor>
+			<id>3</id>
+			<brake>TRUE</brake>
+			<invert>FALSE</invert>
+			<maxOut>1.0</maxOut>
+			<type>CANTalon</type>
+		</motor>
+		
+		<encoder>
+			<distPerCount>0.00279</distPerCount>
+			<invert>FALSE</invert>
+		</encoder>
+		
+		<limit>
+			<id>3</id>
+			<normallyOpen>FALSE</normallyOpen>
+			<interruptEdge>onHit</interruptEdge>
+			<debounceTime>0.05</debounceTime>
+		</limit>
+		
+		<PID>
+			<kp>0.3</kp>
+			<ki>0.01</ki>
+			<kd>0.0001</kd>
+			<kf>0.2</kf>
+			<period>0.02</period>
+			<tolerance>5</tolerance>
+		</PID>
+		
+		<setpoints>
+			<beamHitAngle>295.0</beamHitAngle>
+			<loadAngle>321.0</loadAngle>
+			<unloadAngle>0</unloadAngle>
+		</setpoints>
+	</ChooChoo>
+	
+	
+	
+	
+	<IntakeWheels>
+		<motor>
+			<brake>FALSE</brake>
+			<id>3</id>
+			<invert>FALSE</invert>
+			<maxOut>0.7</maxOut>
+			<type>CANTalon</type>
+		</motor>
+	</IntakeWheels>
+	
+	
+	
+	
+	
+	<DriveTrain>
+		<leftSide>
+			<motors>
+				<motor>
+					<brake>TRUE</brake>
+					<id>4</id>
+					<invert>FALSE</invert>
+					<type>CANTalon</type>
+				</motor>
+				
+				<motor>
+					<brake>FALSE</brake>
+					<id>5</id>
+					<invert>FALSE</invert>
+					<type>CANTalon</type>
+				</motor>
+			</motors>
+			
+			<encoder>
+				<distPerCount>0.0123</distPerCount>
+				<invert>FALSE</invert>
+			</encoder>
+			
+			<PID>
+				<kp>0.3</kp>
+				<ki>0.01</ki>
+				<kd>0.0001</kd>
+				<kf>0.2</kf>
+				<period>0.02</period>
+				<tolerance>0.0</tolerance>
+			</PID>
+		</leftSide>
+		
+		
+		
+		<rightSide>
+			<motors>
+				<motor>
+					<brake>TRUE</brake>
+					<id>4</id>
+					<invert>FALSE</invert>
+					<type>CANTalon</type>
+				</motor>
+				
+				<motor>
+					<brake>FALSE</brake>
+					<id>5</id>
+					<invert>FALSE</invert>
+					<type>CANTalon</type>
+				</motor>
+			</motors>
+			
+			<encoder>
+				<distPerCount>0.0123</distPerCount>
+				<invert>FALSE</invert>
+			</encoder>
+			
+			<PID>
+				<kp>0.3</kp>
+				<ki>0.01</ki>
+				<kd>0.0001</kd>
+				<kf>0.2</kf>
+				<period>0.02</period>
+				<tolerance>0.0</tolerance>
+			</PID>
+		</rightSide>
+		
+		
+		<maxOut>0.999</maxOut>
+		<fineAdj>0.375</fineAdj>
+		<wheelBaseWidth>1.708</wheelBaseWidth>
+		
+		
+		<distancePID>
+			<kp>0.3</kp>
+			<ki>0.01</ki>
+			<kd>0.0001</kd>
+			<kf>0.2</kf>
+			<period>0.75</period>
+			<tolerance>0.0</tolerance>
+		</distancePID>
+		
+		<anglePID>
+			<kp>0.3</kp>
+			<ki>0.01</ki>
+			<kd>0.0001</kd>
+			<kf>0.2</kf>
+			<period>0.05</period>
+			<tolerance>0.0</tolerance>
+		</anglePID>
+		
+	</DriveTrain>
+	
+	
+	
+	<General>
+		<flashlight>
+			<holdTime>2.0</holdTime>
+			<relayPort>0</relayPort>
+		</flashlight>
+		
+		<zeroLiftAndCCDelay>1.5</zeroLiftAndCCDelay>
+	</General>
+</robot>
+
+
+
+
+
+
+
+
+
+
+
+
