@@ -69,6 +69,7 @@ public class XpathTest {
 					String val = pidChild.getTextContent();
 					
 					System.out.println(name + " = " + val);
+					System.out.println(pidChild.getAttributes().getNamedItem("type").getTextContent());
 				}
 				
 				pidChild = pidChild.getNextSibling();
