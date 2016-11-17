@@ -1,4 +1,4 @@
-package GXMLparser;
+package robotParser;
 
 public interface parseable {
 

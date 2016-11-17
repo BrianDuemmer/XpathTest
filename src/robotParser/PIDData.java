@@ -1,4 +1,4 @@
-package GXMLparser;
+package robotParser;
 
 /**
  * POD Type to store data for a PID loop, as parsed from {@link GXMLparser}
@@ -25,6 +25,20 @@ public class PIDData
 		this.kf = kf;
 		this.period = period;
 		this.tolerance = tolerance;
+		}
+	
+	public String toString()
+	{
+		String ret = "";
+		
+		ret += "kp: " + kp + "\n";
+		ret += "ki: " + ki + "\n";
+		ret += "kd: " + kd + "\n";
+		ret += "kf: " + kf + "\n";
+		ret += "period: " + period + "\n";
+		ret += "tolerance: " + tolerance + "\n";
+		
+		return ret;
 	}
 
 }

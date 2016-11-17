@@ -1,4 +1,4 @@
-package GXMLparser;
+package robotParser;
 
 import java.io.File;
 
@@ -31,7 +31,8 @@ public class GXMLparser
 		DOUBLE,
 		INT,
 		STRING,
-		BOOL
+		BOOL,
+		ENUM
 	}
 	
 	
@@ -43,7 +44,7 @@ public class GXMLparser
 	 * each XML file
 	 * @param path the path to the target XML file
 	 */
-	GXMLparser(String path)
+	public GXMLparser(String path)
 	{
 		try
 		{
@@ -93,7 +94,7 @@ public class GXMLparser
 		String typeVal = null;
 		
 		// Data value
-		String dataValue = null;
+		String dataVal = null;
 		
 		// Return value
 		Object ret;
@@ -116,7 +117,7 @@ public class GXMLparser
 		if(typeVal != null)
 		{
 			// get the data
-			dataValue = child.getTextContent();
+			dataVal = child.getTextContent();
 			
 			// Parse it as the proper value
 			if(typeVal.equals("DBL") || typeVal.equals("SGL") || typeVal.equals("EXT") && type == BASIC_TYPE.DOUBLE)
@@ -142,26 +143,29 @@ public class GXMLparser
 			}
 			
 			
-			if(typeVal.equals("String") || typeVal.equals("Path"))
+			if(typeVal.equals("String") || typeVal.equals("Path") && type == BASIC_TYPE.STRING)
 			{
 				return dataVal;
 			}
 			
 			
-			if(typeVal.equals("Bool"))
+			if(typeVal.equals("Bool") && type == BASIC_TYPE.BOOL)
 			{
 				ret = new Boolean(dataVal);
-				return ret
+				return ret;
 			}
 			
 			
-			if(typeVal.equals("Enum U8") || typeVal.equals("Enum U16") || typeVal.equals("Enum U32"))
+			if(typeVal.equals("Enum U8") || typeVal.equals("Enum U16") || typeVal.equals("Enum U32") && type == BASIC_TYPE.ENUM)
 			{
 				ret = child.getAttributes().getNamedItem("sel").getTextContent();
-				ret += "__" + dataVal;
+				ret += "___" + dataVal;
 				return ret;
 			}
 		}
+		
+		// if nothing is found, return null
+		return null;
 	}
 	
 	
@@ -176,7 +180,7 @@ public class GXMLparser
 	public PIDData parsePID(String path)
 	{
 		// PIDData element
-		PIDData data;
+		PIDData data = new PIDData(0,0,0,0,0,0);
 		
 		// Expression to find the PID node
 		XPathExpression pidExp;
@@ -201,22 +205,17 @@ public class GXMLparser
 			printString("Failed to find a PID with path \"" + path + "\"");
 			return null;
 		}
-
-		// Get the PID Element nodes
-		Node firstChild = pidNode.getFirstChild();
 		
-		do
-		{
-			if(firstChild.getNodeType() == Node.ELEMENT_NODE)
-			{
-				String name = firstChild.getNodeName();
-				String val = firstChild.getTextContent();
-				
-			}
-			
-			firstChild = firstChild.getNextSibling();
-		}   
-		while(firstChild != null);
+		// parse out the elements
+		data.kp = (Double)getElementByName("kp", pidNode, BASIC_TYPE.DOUBLE);
+		data.ki = (Double)getElementByName("ki", pidNode, BASIC_TYPE.DOUBLE);
+		data.kd = (Double)getElementByName("kd", pidNode, BASIC_TYPE.DOUBLE);
+		data.kf = (Double)getElementByName("kf", pidNode, BASIC_TYPE.DOUBLE);
+		data.period = (Double)getElementByName("period", pidNode, BASIC_TYPE.DOUBLE);
+		data.tolerance = (Double)getElementByName("tolerance", pidNode, BASIC_TYPE.DOUBLE);
+		
+		// return the parsed values
+		return data;
 	}
 }
 
