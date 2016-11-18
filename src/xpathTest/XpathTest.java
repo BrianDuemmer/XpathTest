@@ -1,5 +1,7 @@
 package xpathTest;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import robotParser.GXMLparser;
 
 public class XpathTest {
@@ -20,10 +22,15 @@ public class XpathTest {
 		
 //		System.out.println(parser.parseTankCascade("DriveTrain"));
 		
+		try {
+			System.out.println(parser.parseSetpoint("IntakeLift/setpoints", "maxDown"));
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
 		
 		for(int i=0; i<10000; i++)
 			parser.parseTankCascade("DriveTrain");
-
+		System.out.println(System.currentTimeMillis() - startTime);
 	}
 }
 

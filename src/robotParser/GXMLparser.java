@@ -79,6 +79,42 @@ public class GXMLparser
 	
 	
 	
+	/**
+	 * Parses a single key out of the xml file, 
+	 * @return an {@link Object} that contains the key data. Cast it to a double, int, etc. as needed.
+	 * @throws XPathExpressionException 
+	 */
+	public Object getKeyByPath(String path, BASIC_TYPE type) throws XPathExpressionException
+	{
+		Object ret = null;
+		String data;
+		
+		XPathExpression expr = xpath.compile("GXML_Root/" + path);
+		Node key = (Node)expr.evaluate(doc, XPathConstants.NODE);
+		
+		data = key.getTextContent();
+		
+		if(type == BASIC_TYPE.BOOL)
+			ret = new Boolean(data);
+		
+		if(type == BASIC_TYPE.INT)
+			ret = new Integer(data);
+		
+		if(type == BASIC_TYPE.DOUBLE)
+			ret = new Double(data);
+		
+		if(type == BASIC_TYPE.STRING)
+			ret = data;
+		
+		if(type == BASIC_TYPE.ENUM)
+		{
+			int val = new Integer(data);
+			ret = new EnumPair(key.getAttributes().getNamedItem("sel").getTextContent(), val);
+		}
+		
+		return ret;
+	}
+	
 	
 	
 	/**
@@ -501,6 +537,25 @@ public class GXMLparser
 			e.printStackTrace();
 			return data;
 		}
+	}
+	
+	
+	
+	/**
+	 * Parses a setpoint from a setpoint list specified by <code>path</code> with the name <code>name</code>
+	 * @return the value of the specified setpoint
+	 * @throws XPathExpressionException 
+	 */
+	public double parseSetpoint(String path, String name) throws XPathExpressionException
+	{
+		// get the proper value node
+		// expression: GXML_Root/<path>/Setpoint[name='<name>']/value
+		XPathExpression expr = xpath.compile("GXML_Root/" + path + "/Setpoint[name=\'" + name + "\']/value");
+		Node setpoint = (Node)expr.evaluate(doc, XPathConstants.NODE);
+		
+		// parse out the content of the value node, and return
+		double ret = new Double(setpoint.getTextContent());
+		return ret;
 	}
 }
 

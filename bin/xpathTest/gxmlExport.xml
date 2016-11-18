@@ -25,7 +25,7 @@
     <PID mems='6'>
       <kp type='DBL'>0.3</kp>
       <ki type='DBL'>0.01</ki>
-      <kd type='DBL'>0.0002</kd>
+      <kd type='DBL'>0.0001</kd>
       <kf type='DBL'>0</kf>
       <period type='DBL'>0.02</period>
       <tolerance type='DBL'>0.5</tolerance>
@@ -37,7 +37,7 @@
       </Setpoint>
       <Setpoint mems='2'>
         <name type='String'>limitPos</name>
-        <value type='DBL'>5</value>
+        <value type='DBL'>8</value>
       </Setpoint>
       <Setpoint mems='2'>
         <name type='String'>maxDown</name>
@@ -45,7 +45,7 @@
       </Setpoint>
       <Setpoint mems='2'>
         <name type='String'>maxUp</name>
-        <value type='DBL'>113</value>
+        <value type='DBL'>118</value>
       </Setpoint>
     </setpoints>
   </IntakeLift>
@@ -62,7 +62,7 @@
       <Bchannel type='I32'>-1</Bchannel>
       <IDXchannel type='I32'>-1</IDXchannel>
       <invert type='Bool'>FALSE</invert>
-      <distPerCount type='DBL'>0.027933</distPerCount>
+      <distPerCount type='DBL'>0.002930055</distPerCount>
     </encoder>
     <limit mems='4'>
       <id type='I32'>2</id>
@@ -71,10 +71,10 @@
       <debounceTime type='DBL'>0.01</debounceTime>
     </limit>
     <PID mems='6'>
-      <kp type='DBL'>0.3</kp>
-      <ki type='DBL'>0.01</ki>
-      <kd type='DBL'>0.0001</kd>
-      <kf type='DBL'>0.2</kf>
+      <kp type='DBL'>0.275</kp>
+      <ki type='DBL'>0.0001</ki>
+      <kd type='DBL'>0.0</kd>
+      <kf type='DBL'>0.25</kf>
       <period type='DBL'>0.02</period>
       <tolerance type='DBL'>5</tolerance>
     </PID>
@@ -85,7 +85,7 @@
       </Setpoint>
       <Setpoint mems='2'>
         <name type='String'>loadAngle</name>
-        <value type='DBL'>321</value>
+        <value type='DBL'>315</value>
       </Setpoint>
       <Setpoint mems='2'>
         <name type='String'>unloadAngle</name>
@@ -110,14 +110,14 @@
           <id type='I32'>1</id>
           <invert type='Bool'>FALSE</invert>
           <brake type='Bool'>FALSE</brake>
-          <maxOut type='DBL'>1</maxOut>
+          <maxOut type='DBL'>0.999</maxOut>
         </motor>
         <motor mems='5'>
           <type type='Enum U16' sel='CANTalon'>1</type>
           <id type='I32'>4</id>
           <invert type='Bool'>FALSE</invert>
           <brake type='Bool'>TRUE</brake>
-          <maxOut type='DBL'>1</maxOut>
+          <maxOut type='DBL'>0.999</maxOut>
         </motor>
       </Motors>
       <encoder mems='5'>
@@ -128,10 +128,10 @@
         <distPerCount type='DBL'>0.012914</distPerCount>
       </encoder>
       <PID mems='6'>
-        <kp type='DBL'>0.3</kp>
-        <ki type='DBL'>0.001</ki>
-        <kd type='DBL'>1</kd>
-        <kf type='DBL'>0.25</kf>
+        <kp type='DBL'>0.275</kp>
+        <ki type='DBL'>0.075</ki>
+        <kd type='DBL'>0.0</kd>
+        <kf type='DBL'>0.2</kf>
         <period type='DBL'>0.05</period>
         <tolerance type='DBL'>0</tolerance>
       </PID>
@@ -143,14 +143,14 @@
           <id type='I32'>5</id>
           <invert type='Bool'>TRUE</invert>
           <brake type='Bool'>FALSE</brake>
-          <maxOut type='DBL'>1</maxOut>
+          <maxOut type='DBL'>0.999</maxOut>
         </motor>
         <motor mems='5'>
           <type type='Enum U16' sel='CANTalon'>1</type>
           <id type='I32'>6</id>
           <invert type='Bool'>TRUE</invert>
           <brake type='Bool'>TRUE</brake>
-          <maxOut type='DBL'>1</maxOut>
+          <maxOut type='DBL'>0.999</maxOut>
         </motor>
       </Motors>
       <encoder mems='5'>
@@ -161,10 +161,10 @@
         <distPerCount type='DBL'>0.012914</distPerCount>
       </encoder>
       <PID mems='6'>
-        <kp type='DBL'>0.3</kp>
-        <ki type='DBL'>0.001</ki>
-        <kd type='DBL'>1</kd>
-        <kf type='DBL'>0.25</kf>
+        <kp type='DBL'>0.275</kp>
+        <ki type='DBL'>0.075</ki>
+        <kd type='DBL'>0.0</kd>
+        <kf type='DBL'>0.2</kf>
         <period type='DBL'>0.05</period>
         <tolerance type='DBL'>0</tolerance>
       </PID>
@@ -185,7 +185,7 @@
       <period type='DBL'>0</period>
       <tolerance type='DBL'>0</tolerance>
     </anglePID>
-    <maxOut type='DBL'>1</maxOut>
+    <maxOut type='DBL'>0.999</maxOut>
     <fineAdj type='DBL'>0.375</fineAdj>
     <wheelBaseWidth type='DBL'>1.708</wheelBaseWidth>
   </DriveTrain>
