@@ -1,0 +1,80 @@
+<?xml version='1.0' standalone='yes' ?>
+<GXML_Root>
+  <IntakeLift mems='5'>
+    <motor mems='5'>
+      <type type='Enum U16' sel='CANTalon'>1</type>
+      <id type='I32'>1</id>
+      <invert type='Bool'>TRUE</invert>
+      <brake type='Bool'>FALSE</brake>
+      <maxOut type='DBL'>0</maxOut>
+    </motor>
+    <limit mems='4'>
+      <id type='I32'>2</id>
+      <normallyOpen type='Bool'>TRUE</normallyOpen>
+      <interruptEdge type='Enum U16' sel='onHit'>0</interruptEdge>
+      <debounceTime type='DBL'>0.75</debounceTime>
+    </limit>
+    <encoder mems='5'>
+      <Achannel type='I32'>0</Achannel>
+      <Bchannel type='I32'>1</Bchannel>
+      <IDXchannel type='I32'>-1</IDXchannel>
+      <invert type='Bool'>TRUE</invert>
+      <distPerCount type='DBL'>0.0075</distPerCount>
+    </encoder>
+    <PID mems='6'>
+      <kp type='DBL'>0.3</kp>
+      <ki type='DBL'>0.01</ki>
+      <kd type='DBL'>0.0001</kd>
+      <kf type='DBL'>0.2</kf>
+      <period type='DBL'>0.02</period>
+      <tolerance type='DBL'>5</tolerance>
+    </PID>
+    <Setpoints mems='4'>
+      <ballGrabAngle type='DBL'>1</ballGrabAngle>
+      <limitPos type='DBL'>2</limitPos>
+      <maxDown type='DBL'>3</maxDown>
+      <maxUp type='DBL'>4</maxUp>
+    </Setpoints>
+  </IntakeLift>
+  <a type='DBL'>-2.4</a>
+  <c type='Bool'>FALSE</c>
+  <ChooChoo mems='5'>
+    <motor mems='5'>
+      <type type='Enum U16' sel='CANTalon'>1</type>
+      <id type='I32'>4</id>
+      <invert type='Bool'>TRUE</invert>
+      <brake type='Bool'>TRUE</brake>
+      <maxOut type='DBL'>1</maxOut>
+    </motor>
+    <limit mems='4'>
+      <id type='I32'>2</id>
+      <normallyOpen type='Bool'>FALSE</normallyOpen>
+      <interruptEdge type='Enum U16' sel='onHit'>0</interruptEdge>
+      <debounceTime type='DBL'>0.05</debounceTime>
+    </limit>
+    <encoder mems='5'>
+      <Achannel type='I32'>-1</Achannel>
+      <Bchannel type='I32'>-1</Bchannel>
+      <IDXchannel type='I32'>-1</IDXchannel>
+      <invert type='Bool'>TRUE</invert>
+      <distPerCount type='DBL'>0.025</distPerCount>
+    </encoder>
+    <PID mems='6'>
+      <kp type='DBL'>2</kp>
+      <ki type='DBL'>1</ki>
+      <kd type='DBL'>0.1</kd>
+      <kf type='DBL'>0</kf>
+      <period type='DBL'>1</period>
+      <tolerance type='DBL'>1</tolerance>
+    </PID>
+    <Setpoints mems='4'>
+      <ballGrabAngle type='DBL'>0</ballGrabAngle>
+      <limitPos type='DBL'>0</limitPos>
+      <maxDown type='DBL'>0</maxDown>
+      <maxUp type='DBL'>0</maxUp>
+    </Setpoints>
+  </ChooChoo>
+  <B type='Bool'>TRUE</B>
+  <D type='DBL'>2</D>
+  <E type='DBL'>0</E>
+</GXML_Root>

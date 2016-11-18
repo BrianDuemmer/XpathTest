@@ -12,6 +12,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * This class serves as a parser for GXML configuration files saved by the LabVIEW dashboard.
@@ -37,10 +38,12 @@ public class GXMLparser
 	
 	
 	
+	
+	
 	/**
 	 * Creates a new instance of of the parser.
 	 * 
-	 * <i> NOTE:<i/> There should only be one GXMLparser for
+	 * <i> NOTE:</i> There should only be one GXMLparser for
 	 * each XML file
 	 * @param path the path to the target XML file
 	 */
@@ -66,7 +69,7 @@ public class GXMLparser
 	
 	
 	/**
-	 * Print a string out
+	 * Print a string out. May eventually also print to a file or something
 	 * @param str
 	 */
 	private void printString(String str)
@@ -158,14 +161,31 @@ public class GXMLparser
 			
 			if(typeVal.equals("Enum U8") || typeVal.equals("Enum U16") || typeVal.equals("Enum U32") && type == BASIC_TYPE.ENUM)
 			{
-				ret = child.getAttributes().getNamedItem("sel").getTextContent();
-				ret += "___" + dataVal;
+				String sel = child.getAttributes().getNamedItem("sel").getTextContent();
+				ret = new EnumPair(sel, new Integer(dataVal));
 				return ret;
 			}
 		}
 		
-		// if nothing is found, return null
+		// if nothing is found, return the default value for the specified type
+		if(type == BASIC_TYPE.DOUBLE)
+			return new Double(0);
+		
+		if(type == BASIC_TYPE.BOOL)
+			return new Boolean(false);
+		
+		if(type == BASIC_TYPE.ENUM)
+			return new EnumPair("", -1);
+		
+		if(type == BASIC_TYPE.INT)
+			return new Integer(0);
+		
+		if(type == BASIC_TYPE.STRING)
+			return "";
+		
+		//unreachable statement to satisfy compiler
 		return null;
+		
 	}
 	
 	
@@ -174,13 +194,13 @@ public class GXMLparser
 	
 	/**
 	 * Parses a PID loop from the document, and returns a PIDData object containing the data
-	 * @param path the path to the PID Element in the document, without the root "GXML" element
+	 * @param path the path to the PID Element in the document, without the root "GXML_Root" tag
 	 * @return a data element containing the PID data
 	 */
 	public PIDData parsePID(String path)
 	{
 		// PIDData element
-		PIDData data = new PIDData(0,0,0,0,0,0);
+		PIDData data = new PIDData();
 		
 		// Expression to find the PID node
 		XPathExpression pidExp;
@@ -191,19 +211,19 @@ public class GXMLparser
 		// Try to compile the expression and find the PID node. If it fails, return null and print a warning
 		try 
 		{
-			pidExp = xpath.compile("GXML/" + path);
+			pidExp = xpath.compile("GXML_Root/" + path);
 			pidNode = (Node) pidExp.evaluate(doc, XPathConstants.NODE);
 		} catch (XPathExpressionException e) {
 			printString("Error: expression \"" + path + "\" failed to compile. DETAILS:");
 			e.printStackTrace();
-			return null;
+			return data;
 		}
 		
 		// Make sure that the node is found
 		if(pidNode == null)
 		{
 			printString("Failed to find a PID with path \"" + path + "\"");
-			return null;
+			return data;
 		}
 		
 		// parse out the elements
@@ -216,6 +236,271 @@ public class GXMLparser
 		
 		// return the parsed values
 		return data;
+	}
+	
+	
+	
+	
+	/**
+	 * Parses a motor from the document, and returns a MotorData object containing the data
+	 * @param path the path to the motor Element in the document, without the root "GXML_Root" tag
+	 * @return a data element containing the motor data
+	 */
+	public MotorData parseMotor(String path)
+	{
+		// MotorData element
+		MotorData data = new MotorData();
+		
+		// Expression to find the motor node
+		XPathExpression motorExp;
+		
+		//motor node
+		Node motorNode;
+		
+		// Try to compile the expression and find the PID node. If it fails, return null and print a warning
+		try 
+		{
+			motorExp = xpath.compile("GXML_Root/" + path);
+			motorNode = (Node) motorExp.evaluate(doc, XPathConstants.NODE);
+		} catch (XPathExpressionException e) {
+			printString("Error: expression \"" + path + "\" failed to compile. DETAILS:");
+			e.printStackTrace();
+			return data;
+		}
+		
+		// Make sure that the node is found
+		if(motorNode == null)
+		{
+			printString("Failed to find a motor with path \"" + path + "\"");
+			return data;
+		}
+		
+		// parse out the elements
+		data.brake = (Boolean)getElementByName("brake", motorNode, BASIC_TYPE.BOOL);
+		data.id = (Integer)getElementByName("id", motorNode, BASIC_TYPE.INT);
+		data.invert = (Boolean)getElementByName("invert", motorNode, BASIC_TYPE.BOOL);
+		data.maxOut = (Double)getElementByName("maxOut", motorNode, BASIC_TYPE.DOUBLE);
+		data.type = (EnumPair)getElementByName("type", motorNode, BASIC_TYPE.ENUM);
+		
+		// return the parsed values
+		return data;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Parses an encoder from the document, and returns an EncoderData object containing the data
+	 * @param path the path to the encoder Element in the document, without the root "GXML_Root" tag
+	 * @return a data element containing the encoder data
+	 */
+	public EncoderData parseEncoder(String path)
+	{
+		// MotorData element
+		EncoderData data = new EncoderData();
+		
+		// Expression to find the motor node
+		XPathExpression encoderExp;
+		
+		//motor node
+		Node encoderNode;
+		
+		// Try to compile the expression and find the PID node. If it fails, return null and print a warning
+		try 
+		{
+			encoderExp = xpath.compile("GXML_Root/" + path);
+			encoderNode = (Node) encoderExp.evaluate(doc, XPathConstants.NODE);
+		} catch (XPathExpressionException e) {
+			printString("Error: expression \"" + path + "\" failed to compile. DETAILS:");
+			e.printStackTrace();
+			return data;
+		}
+		
+		// Make sure that the node is found
+		if(encoderNode == null)
+		{
+			printString("Failed to find an encoder with path \"" + path + "\"");
+			return data;
+		}
+		
+		// parse out the elements
+		data.Achannel = (Integer)getElementByName("Achannel", encoderNode, BASIC_TYPE.INT);
+		data.Bchannel = (Integer)getElementByName("Bchannel", encoderNode, BASIC_TYPE.INT);
+		data.IDXchannel = (Integer)getElementByName("IDXchannel", encoderNode, BASIC_TYPE.INT);
+		data.invert = (Boolean)getElementByName("invert", encoderNode, BASIC_TYPE.BOOL);
+		data.distPerCount = (Double)getElementByName("distPerCount", encoderNode, BASIC_TYPE.DOUBLE);
+		
+		// return the parsed values
+		return data;
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Parses a limit switch from the document, and returns a LimitData object containing the data
+	 * @param path the path to the limit switch Element in the document, without the root "GXML_Root" tag
+	 * @return a data element containing the limit data
+	 */
+	public LimitData parseLimit(String path)
+	{
+		// MotorData element
+		LimitData data = new LimitData();
+		
+		// Expression to find the motor node
+		XPathExpression limitExp;
+		
+		//motor node
+		Node limitNode;
+		
+		// Try to compile the expression and find the PID node. If it fails, return null and print a warning
+		try 
+		{
+			limitExp = xpath.compile("GXML_Root/" + path);
+			limitNode = (Node) limitExp.evaluate(doc, XPathConstants.NODE);
+		} catch (XPathExpressionException e) {
+			printString("Error: expression \"" + path + "\" failed to compile. DETAILS:");
+			e.printStackTrace();
+			return data;
+		}
+		
+		// Make sure that the node is found
+		if(limitNode == null)
+		{
+			printString("Failed to find an encoder with path \"" + path + "\"");
+			return data;
+		}
+		
+		// parse out the elements
+		data.debounceTime = (Double)getElementByName("debounceTime", limitNode, BASIC_TYPE.DOUBLE);
+		data.id= (Integer)getElementByName("id", limitNode, BASIC_TYPE.INT);
+		data.interruptEdge = (EnumPair)getElementByName("interruptEdge", limitNode, BASIC_TYPE.ENUM);
+		data.normallyOpen = (Boolean)getElementByName("normallyOpen", limitNode, BASIC_TYPE.BOOL);
+		
+		// return the parsed values
+		return data;
+	}
+	
+	
+	
+	
+	/**
+	 * Parses a limit switch from the document, and returns a LimitData object containing the data
+	 * @param path the path to the limit switch Element in the document, without the root "GXML_Root" tag
+	 * @return a data element containing the limit data
+	 */
+	public DriveSideData parseDriveSide(String path)
+	{
+		// MotorData element
+		DriveSideData data = new DriveSideData();
+		
+		// Expression to find the driveSide node
+		XPathExpression driveSideExp;
+		
+		//motor driveSide
+		Node driveSideNode;
+		
+		// Try to compile the expression and find the node. If it fails, return null and print a warning
+		try 
+		{
+			driveSideExp = xpath.compile("GXML_Root/" + path);
+			driveSideNode = (Node) driveSideExp.evaluate(doc, XPathConstants.NODE);
+
+		
+		
+			// Make sure that the node is found
+			if(driveSideNode == null)
+			{
+				printString("Failed to find a driveSide with path \"" + path + "\"");
+				return data;
+			}
+			
+			
+			
+			// Create an expression to find all of the motors
+			XPathExpression motorsExp;
+			NodeList motors;
+			
+			motorsExp = xpath.compile("GXML_Root/" + path + "/Motors/motor");
+			motors = (NodeList)motorsExp.evaluate(doc, XPathConstants.NODESET);
+			
+			
+			// iterate through the motors and add them to the driveSide
+			for(int i = 1; i <= motors.getLength(); i++)
+				data.motors.add(parseMotor(path + "/Motors/motor[" + i + "]"));
+			
+			
+			// populate the data variable
+			data.pid = parsePID(path + "/PID");
+			data.encoder = parseEncoder(path + "/encoder");
+			
+			
+			// return the parsed values
+			return data;
+			
+		} 
+		catch (XPathExpressionException e) {
+			printString("Error: expression \"" + path + "\" failed to compile. DETAILS:");
+			e.printStackTrace();
+			return data;
+		}
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Parses a Tank Cascade Controller from the document, and returns a TankCascadeData object containing the data
+	 * @param path the path to the Tank Cascade Controller Element in the document, without the root "GXML_Root" tag
+	 * @return a data element containing the Tank Cascade Controller data
+	 */
+	public TankCascadeData parseTankCascade(String path)
+	{
+		// TankCascadeData element
+		TankCascadeData data = new TankCascadeData();
+		
+		// Expression to find the TankCascadeData node
+		XPathExpression tankCascadeExp;
+		
+		
+		Node tankCascadeNode;
+		
+		// Try to compile the expression and find the node. If it fails, return null and print a warning
+		try 
+		{
+			tankCascadeExp = xpath.compile("GXML_Root/" + path);
+			tankCascadeNode = (Node) tankCascadeExp.evaluate(doc, XPathConstants.NODE);
+
+		
+		
+			// Make sure that the node is found
+			if(tankCascadeNode == null)
+			{
+				printString("Failed to find a driveSide with path \"" + path + "\"");
+				return data;
+			}
+			
+			
+			// parse the individual elements
+			data.leftData = parseDriveSide(path + "/leftSide");
+			data.rightData = parseDriveSide(path + "/rightSide");
+			data.anglePID = parsePID(path + "/anglePID");
+			data.distancePID = parsePID(path + "/distancePID");
+			data.wheelBaseWidth = (Double)getElementByName("wheelBaseWidth", tankCascadeNode, BASIC_TYPE.DOUBLE);
+			
+			// return the parsed values
+			return data;
+			
+		} 
+		catch (XPathExpressionException e) {
+			printString("Error: expression \"" + path + "\" failed to compile. DETAILS:");
+			e.printStackTrace();
+			return data;
+		}
 	}
 }
 

@@ -25,7 +25,12 @@ public class PIDData
 		this.kf = kf;
 		this.period = period;
 		this.tolerance = tolerance;
-		}
+	}
+	
+	/**
+	 * Default constructor
+	 */
+	public PIDData(){}
 	
 	public String toString()
 	{

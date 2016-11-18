@@ -1,28 +1,29 @@
 package xpathTest;
 
-import java.io.File;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import robotParser.GXMLparser;
 
 public class XpathTest {
 
 	public static void main(String[] args) 
 	{
+		long startTime = System.currentTimeMillis();
 		// create a new GXML parser
 		GXMLparser parser = new GXMLparser("src/xpathTest/gxmlExport.xml");
-		System.out.println(parser.parsePID("IntakeLift/PID").toString());
 		
+		// parse some stuff
+//		System.out.println(parser.parsePID("IntakeLift/PID"));
+//		System.out.println(parser.parseMotor("IntakeLift/motor"));
+//		System.out.println(parser.parseEncoder("IntakeLift/encoder"));
+//		System.out.println(parser.parseLimit("IntakeLift/limit"));
+		
+//		System.out.println(parser.parseDriveSide("DriveTrain/leftSide"));
+		
+//		System.out.println(parser.parseTankCascade("DriveTrain"));
+		
+		
+		for(int i=0; i<10000; i++)
+			parser.parseTankCascade("DriveTrain");
+
 	}
 }
 
